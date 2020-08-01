@@ -127,7 +127,16 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button1,        barclick,       {.i = 1 } },
+	{ ClkStatusText,        0,              Button2,        barclick,       {.i = 2 } },
+	{ ClkStatusText,        0,              Button3,        barclick,       {.i = 3 } },
+	{ ClkStatusText,        0,              Button4,        barclick,       {.i = 4 } },
+	{ ClkStatusText,        0,              Button5,        barclick,       {.i = 5 } },
+	{ ClkStatusText,        ShiftMask,      Button1,        barclick,       {.i = 6 } },
+	{ ClkStatusText,        ShiftMask,      Button2,        barclick,       {.i = 7 } },
+	{ ClkStatusText,        ShiftMask,      Button3,        barclick,       {.i = 8 } },
+	{ ClkStatusText,        ShiftMask,      Button4,        barclick,       {.i = 9 } },
+	{ ClkStatusText,        ShiftMask,      Button5,        barclick,       {.i = 10} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
@@ -137,3 +146,5 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
 
+/* bar settings */
+static const char barfifo[] = "/tmp/dwmbar.fifo";
