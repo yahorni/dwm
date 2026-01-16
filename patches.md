@@ -13,3 +13,4 @@ To apply a patch: `patch -p1 < $PATCH`
 - [alwayscenter](https://dwm.suckless.org/patches/alwayscenter/dwm-alwayscenter-20200625-f04cac6.diff)
 - [systray](https://dwm.suckless.org/patches/systray/dwm-systray-20230922-9f88553.diff)
 - [movestack](https://dwm.suckless.org/patches/movestack/dwm-movestack-20211115-a786211.diff)
+- [hide vacant tags](https://dwm.suckless.org/patches/hide_vacant_tags/dwm-hide_vacant_tags-6.4.diff)
