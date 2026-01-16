@@ -8,3 +8,4 @@ To apply a patch: `patch -p1 < $PATCH`
 - [noborder](https://dwm.suckless.org/patches/noborder/dwm-noborderfloatingfix-6.2.diff)
 - [restartsig](https://dwm.suckless.org/patches/restartsig/dwm-restartsig-20180523-6.2.diff)
 - [swallow](https://dwm.suckless.org/patches/swallow/dwm-swallow-6.3.diff)
+- [sticky](https://dwm.suckless.org/patches/sticky/dwm-sticky-6.5.diff)
