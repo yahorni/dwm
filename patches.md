@@ -14,3 +14,4 @@ To apply a patch: `patch -p1 < $PATCH`
 - [systray](https://dwm.suckless.org/patches/systray/dwm-systray-20230922-9f88553.diff)
 - [movestack](https://dwm.suckless.org/patches/movestack/dwm-movestack-20211115-a786211.diff)
 - [hide vacant tags](https://dwm.suckless.org/patches/hide_vacant_tags/dwm-hide_vacant_tags-6.4.diff)
+- [dwmbar](https://raw.githubusercontent.com/yahorni/dwmbar/refs/heads/master/dwm-dwmbar-6.5.diff)

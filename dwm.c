@@ -330,6 +330,14 @@ static Window root, wmcheckwin;
 
 static xcb_connection_t *xcon;
 
+/* bar */
+#include <sys/stat.h>
+#include <fcntl.h>
+static void barclick(const Arg *arg);
+static void copyvalidchars(char *text, char *rawtext);
+static int barblock = -1;
+static char rawstext[256];
+
 /* configuration, allows nested code to access above variables */
 #include "config.h"
 
@@ -577,9 +585,23 @@ buttonpress(XEvent *e)
 			arg.ui = 1 << i;
 		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
 			click = ClkLtSymbol;
-		else if (ev->x > selmon->ww - (int)TEXTW(stext) - getsystraywidth())
+		else if (ev->x > (x = selmon->ww - (int)TEXTW(stext) - getsystraywidth() + lrpad / 2 - 2)) {
 			click = ClkStatusText;
-		else
+			char *text = rawstext;
+			i = 0;
+			barblock = 1;
+			while (text[i]) {
+				if ((unsigned char)text[i++] != '\n')
+					continue;
+				text[i] = '\0';
+				x += TEXTW(text) - lrpad - lrpad / 2 + 2;
+				text[i] = '\n';
+				text += i + 1;
+				i = 0;
+				if (ev->x <= x) break;
+				barblock++;
+			}
+		} else
 			click = ClkWinTitle;
 	} else if ((c = wintoclient(ev->window))) {
 		focus(c);
@@ -591,6 +613,33 @@ buttonpress(XEvent *e)
 		if (click == buttons[i].click && buttons[i].func && buttons[i].button == ev->button
 		&& CLEANMASK(buttons[i].mask) == CLEANMASK(ev->state))
 			buttons[i].func(click == ClkTagBar && buttons[i].arg.i == 0 ? &arg : &buttons[i].arg);
+}
+
+void
+barclick(const Arg *arg)
+{
+	static char cmdbuf[32];
+	int fd = open(barfifo, O_WRONLY | O_NONBLOCK);
+	if (fd != -1 && barblock != -1) {
+		sprintf(cmdbuf, "%d %d\n", barblock, arg->i);
+		write(fd, cmdbuf, strlen(cmdbuf)+1);
+		close(fd);
+		barblock = -1;
+		memset(cmdbuf, 0, strlen(cmdbuf));
+	}
+}
+
+void
+copyvalidchars(char *text, char *rawtext)
+{
+	int i = -1, j = 0;
+
+	while(rawtext[++i]) {
+		if ((unsigned char)rawtext[i] != '\n') {
+			text[j++] = rawtext[i];
+		}
+	}
+	text[j] = '\0';
 }
 
 void
@@ -2467,8 +2516,10 @@ updatesizehints(Client *c)
 void
 updatestatus(void)
 {
-	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
+	if (!gettextprop(root, XA_WM_NAME, rawstext, sizeof(rawstext)))
 		strcpy(stext, "dwm-"VERSION);
+	else
+		copyvalidchars(stext, rawstext);
 	drawbar(selmon);
 	updatesystray();
 }
