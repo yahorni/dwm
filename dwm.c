@@ -276,6 +276,7 @@ static void updatetitle(Client *c);
 static void updatewindowtype(Client *c);
 static void updatewmhints(Client *c);
 static void view(const Arg *arg);
+static void view_active(const Arg *arg);
 static Client *wintoclient(Window w);
 static Monitor *wintomon(Window w);
 static Client *wintosystrayicon(Window w);
@@ -2665,6 +2666,38 @@ view(const Arg *arg)
 	selmon->lt[selmon->sellt^1] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt^1];
 	focus(NULL);
 	arrange(selmon);
+}
+
+void
+view_active(const Arg *arg)
+{
+	int i, curtags;
+	int seltag = 0;
+	Arg a;
+
+	unsigned int occ = 0;
+	Client *c;
+
+	curtags = selmon->tagset[selmon->seltags];
+	for(i = 0; i < LENGTH(tags); i++)
+		if(curtags & (1 << i)){
+			seltag = i;
+			break;
+		}
+
+	for (c = selmon->clients; c; c = c->next)
+		occ |= c->tags == 255 ? 0 : c->tags;
+
+	for (i = 0; i < LENGTH(tags); i++) {
+		seltag = (seltag + arg->i) % (int)LENGTH(tags);
+		if (seltag < 0)
+			seltag += LENGTH(tags);
+		if (occ & 1 << seltag || selmon->tagset[selmon->seltags] & 1 << seltag)
+			break;
+	}
+
+	a.i = (1 << seltag);
+	view(&a);
 }
 
 pid_t
