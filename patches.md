@@ -10,3 +10,4 @@ To apply a patch: `patch -p1 < $PATCH`
 - [swallow](https://dwm.suckless.org/patches/swallow/dwm-swallow-6.3.diff)
 - [sticky](https://dwm.suckless.org/patches/sticky/dwm-sticky-6.5.diff)
 - [save floats](https://dwm.suckless.org/patches/save_floats/dwm-savefloats-20181212-b69c870.diff)
+- [alwayscenter](https://dwm.suckless.org/patches/alwayscenter/dwm-alwayscenter-20200625-f04cac6.diff)
